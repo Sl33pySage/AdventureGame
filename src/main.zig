@@ -2,6 +2,7 @@ const std = @import("std");
 const Io = std.Io;
 
 const AdventureGame = @import("AdventureGame");
+const UserInput = @import("UserInput.zig");
 
 pub fn main(init: std.process.Init) !void {
     // 1. Initialize stdout/stdin using the new 0.15 process context
@@ -29,6 +30,7 @@ pub fn main(init: std.process.Init) !void {
 
         // 4. Output the result
         try stdout.print("You entered '{s}'\n", .{user_input});
+        UserInput.runCommand(user_input);
         try stdout.flush();
         if (std.mem.eql(u8, "quit", user_input)) {
             game_active = false;
