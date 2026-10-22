@@ -4,13 +4,20 @@ const Io = std.Io;
 const AdventureGame = @import("AdventureGame");
 
 pub fn runCommand(inputstr: []const u8) void {
-    // const s = "ok";
+    // var s = "ok";
+    const trimmed = std.mem.trim(u8, inputstr, " \t\n\r");
+    std.debug.print("trimmed: '{s}'\n", .{trimmed});
 
-    for (inputstr) |letter| {
+    for (trimmed) |letter| {
         const lowerletter = std.ascii.toLower(letter);
         if (std.ascii.isWhitespace(lowerletter)) {
             continue;
         }
-        std.debug.print("{c}\n", .{lowerletter});
+        // if (letter != 'q') {
+        // if (trimmed == '') {
+        // std.debug.print("You Must Enter A Command!\n", .{});
+        //}
+        //}
+        std.debug.print("lowerletter: {c}\n", .{lowerletter});
     }
 }
