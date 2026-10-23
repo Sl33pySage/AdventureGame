@@ -5,19 +5,15 @@ const AdventureGame = @import("AdventureGame");
 
 pub fn runCommand(inputstr: []const u8) void {
     // var s = "ok";
+    // var wordList: []const u8 = undefined;
     const trimmed = std.mem.trim(u8, inputstr, " \t\n\r");
-    std.debug.print("trimmed: '{s}'\n", .{trimmed});
+    //std.debug.print("trimmed: '{s}'\n", .{trimmed});
 
-    for (trimmed) |letter| {
-        const lowerletter = std.ascii.toLower(letter);
-        if (std.ascii.isWhitespace(lowerletter)) {
-            continue;
+    if (!std.ascii.eqlIgnoreCase(trimmed, "q")) {
+        if (trimmed.len == 0) {
+            std.debug.print("You Must Enter A Command!\n", .{});
+        } else {
+            std.debug.print("Ready to Parse Command: {s}\n", .{trimmed});
         }
-        // if (letter != 'q') {
-        // if (trimmed == '') {
-        // std.debug.print("You Must Enter A Command!\n", .{});
-        //}
-        //}
-        std.debug.print("lowerletter: {c}\n", .{lowerletter});
     }
 }
