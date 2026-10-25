@@ -26,11 +26,20 @@ pub fn main(init: std.process.Init) !void {
         const raw_input = try stdin.takeDelimiter('\n') orelse return;
 
         // 3. Clean up Windows carriage returns (\r\r -> \n)
-        const user_input = std.mem.trimEnd(u8, raw_input, "\r");
+        const user_input: []const u8 = std.mem.trimEnd(u8, raw_input, "\r");
 
         // 4. Output the result
         try stdout.print("You entered '{s}'\n", .{user_input});
-        UserInput.runCommand(user_input);
+
+        // 1. TODO: prototyping UserInput function and currently working on allocator
+        // a. instantiate allocator state
+        var gpa = std.heap.DebugAllocator(.{}){};
+        defer _ = gpa.deinit(); // Clean up the allocator when main function exits
+        // b. Extract the universal 'std.mem.Allocator' interface value
+        const my_allocator = gpa.allocator();
+        // c. Pass the interface value to the function argument
+        _ = try UserInput.runCommand(my_allocator, user_input);
+        defer my_allocator.free();
         try stdout.flush();
         if (std.mem.eql(u8, "quit", user_input)) {
             game_active = false;
