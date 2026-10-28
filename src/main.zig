@@ -30,8 +30,26 @@ pub fn main(init: std.process.Init) !void {
 
         // 4. Output the result
         try stdout.print("You entered '{s}'\n", .{user_input});
-
         try stdout.flush();
+
+        // TODO: trying to figure out the allocator
+        // 1. Initialize testAllocator
+        var gpa = std.heap.DebugAllocator(.{}){};
+
+        // 2. Get the allocator interface from interface
+        const allocator = gpa.allocator();
+
+        // 3. This checks for and prints memeory leaks when main exits
+        defer {
+            const check = gpa.deinit();
+            if (check == .leak) {
+                std.debug.print("Memory leak detected!\n", .{});
+            }
+        }
+
+        // 4. Pass allocator to UserInput function
+        const result = try UserInput.runCommand(allocator, user_input);
+        std.debug.print("Result: {s}\n", .{result});
         if (std.mem.eql(u8, "quit", user_input)) {
             game_active = false;
         }
