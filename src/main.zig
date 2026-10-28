@@ -39,7 +39,7 @@ pub fn main(init: std.process.Init) !void {
         const my_allocator = gpa.allocator();
         // c. Pass the interface value to the function argument
         _ = try UserInput.runCommand(my_allocator, user_input);
-        defer my_allocator.free();
+        defer my_allocator.free(void);
         try stdout.flush();
         if (std.mem.eql(u8, "quit", user_input)) {
             game_active = false;
