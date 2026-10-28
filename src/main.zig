@@ -31,15 +31,6 @@ pub fn main(init: std.process.Init) !void {
         // 4. Output the result
         try stdout.print("You entered '{s}'\n", .{user_input});
 
-        // 1. TODO: prototyping UserInput function and currently working on allocator
-        // a. instantiate allocator state
-        var gpa = std.heap.DebugAllocator(.{}){};
-        defer _ = gpa.deinit(); // Clean up the allocator when main function exits
-        // b. Extract the universal 'std.mem.Allocator' interface value
-        const my_allocator = gpa.allocator();
-        // c. Pass the interface value to the function argument
-        _ = try UserInput.runCommand(my_allocator, user_input);
-        defer my_allocator.free(void);
         try stdout.flush();
         if (std.mem.eql(u8, "quit", user_input)) {
             game_active = false;
